@@ -5,8 +5,7 @@ _make() {
 
   [[ -f Makefile ]] || return 1
 
-  # Extraire toute ligne valide avec un ':' (pas de =)
-  targets=(${(f)"$(grep -E '^[a-zA-Z0-9_.-]+:' Makefile | cut -d: -f1 | grep -v '=' | sort -u)"})
+  targets=(${(f)"$(grep -E '^[[:space:]]*[a-zA-Z0-9_.@()-]+[[:space:]]*:' Makefile | sed -E 's/^[[:space:]]*//; s/[[:space:]]*:.*//' | sort -u)"})
 
   [[ -n "$targets" ]] && _describe 'make target' targets
 }
