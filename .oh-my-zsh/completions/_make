@@ -1,0 +1,12 @@
+#compdef make
+
+_make() {
+  local targets
+
+  [[ -f Makefile ]] || return 1
+
+  # Extraire toute ligne valide avec un ':' (pas de =)
+  targets=(${(f)"$(grep -E '^[a-zA-Z0-9_.-]+:' Makefile | cut -d: -f1 | grep -v '=' | sort -u)"})
+
+  [[ -n "$targets" ]] && _describe 'make target' targets
+}
